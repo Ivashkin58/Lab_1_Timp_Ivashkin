@@ -1,56 +1,40 @@
 #include "modAlphaCipher.h"
-Cipher::Cipher(int password)
+modAlphaCipher::modAlphaCipher(const wstring& skey)
 {
-    this->p=password;
+    for (unsigned i=0; i<numAlpha.size(); i++) {
+        alphaNum[numAlpha[i]]=i;
+    }
+    key = convert(skey);
 }
-wstring Cipher::zakodirovatCipher(Cipher w, wstring& s)
+wstring modAlphaCipher::encrypt(const wstring& open_text)
 {
-    wstring Output;
-    int v;
-    int dlina=s.size();
-    if (s.size()%w.p!=0) {
-        v=s.size()/w.p+1;
-    } else {
-        v=s.size()/w.p;
+    vector<int> work = convert(open_text);
+    for(unsigned i=0; i < work.size(); i++) {
+        work[i] = (work[i] + key[i % key.size()]) % alphaNum.size();
     }
-    wchar_t x[v][w.p];
-    int p=0;
-    for (int i=0; i<v; ++i) {
-        for (int k=0; k<w.p; ++k) {
-            if (p<s.length()) {
-                x[i][k]=s[p];
-                ++p;
-            } else x[i][k]=' ';
-        }
-    }
-    for (int i=0; i<w.p; ++i) {
-        for (int k=0; k<v; ++k) {
-            Output+=x[k][i];
-        }
-    }
-    return Output;
+    return convert(work);
 }
-wstring Cipher::raskodirovatCipher(Cipher w, wstring& s)
+wstring modAlphaCipher::decrypt(const wstring& cipher_text)
 {
-    int v;
-    if (s.size()%w.p!=0) {
-        v=s.size()/w.p+1;
-    } else {
-        v=s.size()/w.p;
+    vector<int> work = convert(cipher_text);
+    for(unsigned i=0; i < work.size(); i++) {
+        work[i] = (work[i] + alphaNum.size() - key[i % key.size()]) % alphaNum.size();
     }
-    wchar_t x[v][w.p];
-    int p=0;
-    for (int i=0; i<w.p; ++i) {
-        for (int k=0; k<v; ++k) {
-            x[k][i]=s[p];
-            ++p;
-        }
+    return convert(work);
+}
+inline vector<int> modAlphaCipher::convert(const wstring& s)
+{
+    vector<int> result;
+    for(auto c:s) {
+        result.push_back(alphaNum[c]);
     }
-    wstring deOutput;
-    for (int i=0; i<v; ++i) {
-        for (int k=0; k<w.p; ++k) {
-            deOutput+=x[i][k];
-        }
+    return result;
+}
+inline wstring modAlphaCipher::convert(const vector<int>& v)
+{
+    wstring result;
+    for(auto i:v) {
+        result.push_back(numAlpha[i]);
     }
-    return deOutput;
+    return result;
 }
