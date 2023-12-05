@@ -4,17 +4,13 @@
 #include <map>
 #include <locale>
 using namespace std;
-class modAlphaCipher
+class Cipher
 {
 private:
-    wstring numAlpha =L"АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
-    map <char,int> alphaNum;
-    vector <int> key;
-    vector<int> convert(const wstring& s); 
-    wstring convert(const vector<int>& v);
+    int p;
 public:
-    modAlphaCipher()=delete;
-    modAlphaCipher(const wstring& skey);
-    wstring encrypt(const wstring& open_text);
-    wstring decrypt(const wstring& cipher_text);
+    Cipher()=delete;
+    Cipher(int w);
+    wstring zakodirovatCipher(Cipher w, wstring& s);
+    wstring raskodirovatCipher(Cipher w, wstring& s);
 };
