@@ -12,36 +12,30 @@ bool isValid(const wstring& s)
 }
 int main(int argc, char **argv)
 {
+    int klych=3;
     locale loc("ru_RU.UTF-8");
     locale::global(loc);
-    wstring key;
+    wstring z;
     wstring text;
     unsigned op;
-    wcout<<L"Cipher ready. Input key: ";
-    wcin>>key;
-    if (!isValid(key)) {
-        wcerr<<L"key not valid\n";
-        return 1;
-    }
-    wcout<<L"Key loaded\n";
-    modAlphaCipher cipher(key);
+    wcout<<L"Пожалуйста введите пароль: ";
+    wcin>>z;
+    Cipher cipher(klych);
     do {
-        wcout<<L"Cipher ready. Input operation (0-exit, 1-encrypt, 2-decrypt): ";
+        wcout<<L"Какую операцию необходимо произветси(0-exit, 1-encrypt, 2-decrypt): ";
         wcin>>op;
-        if (op > 2) {
-            wcout<<L"Illegal operation\n";
-        } else if (op >0) {
-            wcout<<L"Cipher ready. Input text: ";
+        if (isValid(text)) {
+            if (op >0) {
+            wcout<<L"Введите текст: ";
             wcin>>text;
-            if (isValid(text)) {
                 if (op==1) {
-                    wcout<<L"Encrypted text: "<<cipher.encrypt(text)<<endl;
+                    wcout<<L"Закодированный текст: "<<cipher.zakodirovatCipher(cipher, text)<<endl;
                 } else {
-                    wcout<<L"Decrypted text: "<<cipher.decrypt(text)<<endl;
+                    wcout<<L"Раскодированный текст: "<<cipher.raskodirovatCipher(cipher, text)<<endl;
                 }
-            } else {
+                }else {
                 wcout<<L"Operation aborted: invalid text\n";
-            }
+                }
         }
     } while (op!=0);
     return 0;
